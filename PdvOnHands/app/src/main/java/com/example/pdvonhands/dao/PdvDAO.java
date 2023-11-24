@@ -23,7 +23,7 @@
         private SQLiteOpenHelper openHelper;
         private SQLiteDatabase bancoDados;
         private String nomeTabela = "VENDA";
-        private String[]colunas = {"ID_VENDA", "ID_PRODUTO", "ID_CLIENTE"};
+        private String[]colunas = {"ID_VENDA", "ID_CLIENTE"};
         private Context context;
         private static PdvDAO instancia;
         public static PdvDAO getInstancia(Context context){
@@ -43,24 +43,23 @@
 
         @Override
         public long insert(PdvModel obj) {
-            try{
+            try {
                 ContentValues valores = new ContentValues();
                 valores.put(colunas[1], obj.getCliente().get(0).getId());
-                valores.put(colunas[2], obj.getProdutos().get(0).getId());
 
                 return bancoDados.insert(nomeTabela, null, valores);
-            }catch (SQLException ex){
-                Log.e("Erro", "PdvDAO.insert: "+ ex.getMessage());
+            } catch (SQLException ex) {
+                Log.e("Erro", "PdvDAO.insert: " + ex.getMessage());
             }
             return 0;
         }
+
 
         @Override
         public long update(PdvModel obj) {
             try{
                 ContentValues valores = new ContentValues();
-                valores.put(colunas[1], obj.getProdutos().get(0).getId());
-                valores.put(colunas[2], obj.getCliente().get(0).getId());
+                valores.put(colunas[1], obj.getCliente().get(0).getId());
 
                 String[] identificador = {String.valueOf(obj.getId())};
                 return bancoDados.update(nomeTabela, valores, colunas[0] + " = ?", identificador);
@@ -96,17 +95,17 @@
                         pdvModel.setId(cursor.getInt(0));
 
 
-                        pdvModel.setId(cursor.getInt(1));
+                        /*pdvModel.setId(cursor.getInt(1));
                         ProdutoModel produto = prodController.obterProdutoById(pdvModel.getId());
                         List<ProdutoModel> produtoModelList = new ArrayList<>();
                         if (produto != null) {
                             produtoModelList.add(produto);
                         }
-                        pdvModel.setProdutos(produtoModelList);
+                        pdvModel.setProdutos(produtoModelList);*/
 
 
 
-                        ClienteModel clienteModel = clienteController.selectClienteById(cursor.getInt(2));
+                        ClienteModel clienteModel = clienteController.selectClienteById(cursor.getInt(1));
                         List<ClienteModel> clienteModelList = new ArrayList<>();
                         if (clienteModel != null){
                             clienteModelList.add(clienteModel);
@@ -135,14 +134,14 @@
                 if (cursor.moveToFirst()) {
                     PdvModel pdvModel = new PdvModel();
                     pdvModel.setId(cursor.getInt(0));
-                    pdvModel.setId(cursor.getInt(1));
+                    //pdvModel.setId(cursor.getInt(1));
 
-                    ProdutoModel produto = prodController.obterProdutoById(pdvModel.getId());
+                    /*ProdutoModel produto = prodController.obterProdutoById(pdvModel.getId());
                     List<ProdutoModel> produtoModelList = new ArrayList<>();
                     if (produto != null) {
                         produtoModelList.add(produto);
                     }
-                    pdvModel.setProdutos(produtoModelList);
+                    pdvModel.setProdutos(produtoModelList);*/
 
                     ClienteModel clienteModel = clienteController.selectClienteById(cursor.getInt(2));
                     List<ClienteModel> clienteModelList = new ArrayList<>();

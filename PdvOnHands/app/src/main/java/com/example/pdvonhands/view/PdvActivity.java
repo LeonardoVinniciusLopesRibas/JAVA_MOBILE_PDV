@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.pdvonhands.R;
 import com.example.pdvonhands.adapter.ClienteAdapter;
@@ -74,7 +75,7 @@ public class PdvActivity extends AppCompatActivity {
                 ProdutoModel produtoSelecionado = (ProdutoModel) parent.getItemAtPosition(position);
                 posicaoProdutoSelecionado = position;
 
-                // Preencher os campos com os dados do produto
+
                 edValorUnitario.setText(String.valueOf(produtoSelecionado.getValorUnitario()));
                 edQtdProduto.setText("1");
             }
@@ -100,9 +101,27 @@ public class PdvActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Abre a nova atividade de seleção de cliente com startActivityForResult
                 Intent intent = new Intent(PdvActivity.this, SelecionarClienteActivity.class);
-                startActivityForResult(intent, 1); // 1 é o código de requisição, pode ser qualquer número
+                startActivityForResult(intent, 1);
             }
         });
+
+        btFinalizarNotaFiscal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (pdvController.finalizarVenda()) {
+                    // Se a venda for finalizada com sucesso, exiba uma mensagem ou realize
+                    // qualquer ação adicional desejada.
+                    // Exemplo: exibir uma mensagem de sucesso ou redirecionar para outra atividade.
+                    abrirActivity(NotaFiscalActivity.class);
+                } else {
+                    // Se o carrinho estiver vazio, exiba uma mensagem informando que é necessário
+                    // adicionar itens ao carrinho antes de finalizar a venda.
+                    // Exemplo: exibir um Toast ou uma mensagem na tela.
+                    Toast.makeText(PdvActivity.this, "Adicione itens ao carrinho antes de finalizar a venda", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
 
     }
@@ -137,7 +156,6 @@ public class PdvActivity extends AppCompatActivity {
         }
     }
 
-    //----------------------------------------------------------------------------------------------
     private void atualizarListaProdutosNoTextView(List<ProdutoModel> carrinho) {
         StringBuilder stringBuilder = new StringBuilder();
         for (ProdutoModel produto : carrinho) {
@@ -147,7 +165,6 @@ public class PdvActivity extends AppCompatActivity {
         }
         tvListaProdutos.setText(stringBuilder.toString());
     }
-    //----------------------------------------------------------------------------------------------
     private void adicionarClienteAVenda() {
         ClienteModel clienteSelecionado = pdvController.obterClienteSelecionado();
         if (clienteSelecionado != null) {

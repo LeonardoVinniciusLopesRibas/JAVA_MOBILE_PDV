@@ -50,7 +50,7 @@ public class Produto_VendaDAO implements IGenericDAO<Produto_VendaModel>{
 
     @Override
     public long insert(Produto_VendaModel obj) {
-        try{
+        try {
             ContentValues valores = new ContentValues();
             valores.put(colunas[1], obj.getProduto().get(0).getId());
             valores.put(colunas[2], obj.getVenda().get(0).getId());
@@ -58,8 +58,8 @@ public class Produto_VendaDAO implements IGenericDAO<Produto_VendaModel>{
             valores.put(colunas[4], obj.getValor_total());
 
             return bancoDados.insert(nomeTabela, null, valores);
-        }catch (SQLException ex){
-            Log.e("Erro", "Produto_VendaDAO.Insert(): "+ ex.getMessage());
+        } catch (SQLException ex) {
+            Log.e("Erro", "Produto_VendaDAO.insert: " + ex.getMessage());
         }
         return 0;
     }

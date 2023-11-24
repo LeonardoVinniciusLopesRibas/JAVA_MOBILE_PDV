@@ -16,7 +16,6 @@ public class EmailSender {
         try {
             context.startActivity(Intent.createChooser(intent, "Escolha um cliente de e-mail"));
         } catch (android.content.ActivityNotFoundException ex) {
-            // Tratar caso não haja nenhum cliente de e-mail instalado no dispositivo
             ex.printStackTrace();
         }
     }

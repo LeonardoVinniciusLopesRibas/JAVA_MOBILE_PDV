@@ -51,13 +51,7 @@ public class FormsCadastraClienteActivity extends AppCompatActivity {
             return;
         }
 
-        if (edCpfCnpj.length() < 11 || edCpfCnpj.length() > 11){
-            edCpfCnpj.setError("Excedido tamanho de caracteres, verifique por favor!");
-        }
 
-        if (edCpfCnpj.length() > 14 || edCpfCnpj.length() < 14){
-            edCpfCnpj.setError("Excedido tamanho de caracteres, verifique por favor!");
-        }
 
         if (edEmail.getText().toString().isEmpty()){
             edEmail.setError("O email do cliente é obrigatório!");
@@ -66,8 +60,13 @@ public class FormsCadastraClienteActivity extends AppCompatActivity {
 
 
         if (clienteController != null) {
-            boolean sucesso = clienteController.insertCliente(nome, cpfCnpj, email);
-            showToast("Cadastrado com sucesso");
+            if (edCpfCnpj.length() < 11 || (edCpfCnpj.length() > 11 && edCpfCnpj.length() < 14)
+                    || edCpfCnpj.length() > 14){
+                edCpfCnpj.setError("Excedido tamanho de caracteres, verifique por favor!");
+            }else {
+                boolean sucesso = clienteController.insertCliente(nome, cpfCnpj, email);
+                showToast("Cadastrado com sucesso");
+            }
         } else {
             showToast("Erro: ClienteController não inicializado corretamente.");
         }
